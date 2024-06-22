@@ -68,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // Check if username already exists
     $stmt_check_username = $conn->prepare("SELECT id FROM users WHERE username = ?");
     $stmt_check_username->bind_param("s", $username);
     $stmt_check_username->execute();
@@ -79,7 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Check if email already exists
     $stmt_check_email = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $stmt_check_email->bind_param("s", $email);
     $stmt_check_email->execute();
@@ -90,7 +88,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Hash the password and insert the user into the database
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $email, $hashed_password);
